@@ -8,6 +8,8 @@ class QLabelClickable(QLabel):
     
     def __init__(self, parent=None):
         super(QLabelClickable, self).__init__(parent)
+        
+        
 
     def mousePressEvent(self, event):
         self.lastEvent = "Click"

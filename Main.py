@@ -15,9 +15,6 @@ class AppWindow(QDialog):
     def stop(self):
         self.radio.stop()
         
-        
-            
-
 
 app = QApplication(sys.argv)
 w = AppWindow()

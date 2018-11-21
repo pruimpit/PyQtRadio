@@ -1,0 +1,18 @@
+[  
+   {  
+      "name":"Pinguin Indie",
+      "url":"https://streams.pinguinradio.com/PinguinRadio320.mp3"
+   },
+   {  
+      "name":"Pinguin Classics",
+      "url":"https://streams.pinguinradio.com/PinguinClassics192.mp3"
+   },
+   {  
+      "name":"Pinguin on the rocks",
+      "url":"https://streams.pinguinradio.com/PinguinOnTheRocks192.mp3"
+   },
+   {  
+      "name":"Pinguin Grooves",
+      "url":"https://samcloud.spacial.com/api/listen?sid=98587&m=sc&rid=174412"
+   }
+]

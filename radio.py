@@ -25,6 +25,7 @@ class radio():
         self.sDialog = station.SelectStation()
         
         dia.setStyleSheet("QWidget#Dialog {background-image: url(Music-Record-Vinyl.jpg);}")
+       
         
         self.infoTimer = QtCore.QTimer()
         self.infoTimer.timeout.connect(self.timercall)
@@ -56,14 +57,11 @@ class radio():
         self.client.timeout = 2             # network timeout in seconds (floats allowed), default: None
         self.client.idletimeout = None      # timeout for fetching the result of the idle command is handled seperately, default: None
         
-        
-        
-        
-        
-        
+        self.number = 0
+        self.clear()
         self.addStation("https://streams.pinguinradio.com/PinguinRadio320.mp3")
         print("Starting")
-        self.play(0)
+        self.play(self.number)
         self.getShowInfo()
         
     
@@ -73,7 +71,7 @@ class radio():
         self.showTime()
      
     def selectStation_clicked(self):
-        self.sDialog.showSelectStation()
+        self.sDialog.showSelectStation(self)
         
      
         
@@ -97,9 +95,21 @@ class radio():
         self.connect()
         try:
             self.client.add(station)
+            print(self.client.playlist())
         except mpd.CommandError:
             print("Station not added")
         self.disconnect()    
+    
+    
+    def clear(self):
+        self.connect()
+        try:
+            self.client.clear()
+        except: 
+            print("could not play")
+        self.disconnect()    
+    
+    
     
     
     
@@ -107,6 +117,18 @@ class radio():
         self.connect()
         try:
             self.client.play(number)
+        except: 
+            print("could not play")
+        self.disconnect()    
+    
+    
+    def playNew(self, url, name):
+        self.clear()
+        self.addStation(url)
+        self.showStation(name)
+        self.connect()
+        try:
+            self.client.play(0)
         except: 
             print("could not play")
         self.disconnect()    
@@ -135,9 +157,10 @@ class radio():
     def getShowInfo(self):
         info = self.getInfo()
         song = info.get("title")
-        song = song.split('-')
-        self.showArtist(song[0])
-        self.showSong(song[1])
+        if song != None:
+            song = song.split('-')
+            self.showArtist(song[0])
+            self.showSong(song[1])
            
        
         

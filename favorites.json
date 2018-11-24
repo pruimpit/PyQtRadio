@@ -1,18 +1,22 @@
 [  
    {  
       "name":"Pinguin Indie",
-      "url":"https://streams.pinguinradio.com/PinguinRadio320.mp3"
+      "url":"https://streams.pinguinradio.com/PinguinRadio320.mp3",
+      "type":"audio"
    },
    {  
       "name":"Pinguin Classics",
-      "url":"https://streams.pinguinradio.com/PinguinClassics192.mp3"
+      "url":"https://streams.pinguinradio.com/PinguinClassics192.mp3",
+      "type":"audio"
    },
    {  
       "name":"Pinguin on the rocks",
-      "url":"https://streams.pinguinradio.com/PinguinOnTheRocks192.mp3"
+      "url":"https://streams.pinguinradio.com/PinguinOnTheRocks192.mp3",
+      "type":"audio"
    },
    {  
       "name":"Pinguin Grooves",
-      "url":"https://samcloud.spacial.com/api/listen?sid=98587&m=sc&rid=174412"
+      "url":"https://samcloud.spacial.com/api/listen?sid=98587&m=sc&rid=174412",
+      "type":"audio"
    }
 ]

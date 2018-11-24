@@ -126,6 +126,7 @@ class radio():
         self.clear()
         self.addStation(url)
         self.showStation(name)
+        time.sleep(0.5)
         self.connect()
         try:
             self.client.play(0)

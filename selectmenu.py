@@ -7,7 +7,7 @@ import labelClickable
 
 
 class selectMenu(QDialog):
-    def __init__(self, dialog, items, nrDisplayItems, callBack):
+    def __init__(self, dialog, items, nrDisplayItems, xpos, callBack):
         super().__init__()
         self.dialogParent  = dialog
         self.callback = callBack
@@ -17,6 +17,7 @@ class selectMenu(QDialog):
         self.nrDisplayItems = nrDisplayItems
         self.offset = 0
         self.length = 0
+        self.xpos = xpos
         
         self.font = QtGui.QFont()
         self.font.setFamily("Droid Sans")
@@ -46,7 +47,8 @@ class selectMenu(QDialog):
           
         
     def itemCallback(self, item):
-        self.callback(item + self.offset)
+        if item < (len(self.items)-1):
+            self.callback(item + self.offset)
         
     
     def createItemsMenu(self, items):
@@ -62,7 +64,7 @@ class selectMenu(QDialog):
         index = 0
         for item in range(0, nrOfItems):
             self.displayedMenuItems.append(items[item].get("url"))
-            self.labelHandler.append(self.createLabel(240, y, "white", 
+            self.labelHandler.append(self.createLabel(self.xpos, y, "white", 
                              items[item].get("name"), 
                              partial(self.itemCallback ,item)))
             index += 1
@@ -71,7 +73,7 @@ class selectMenu(QDialog):
         if  nrOfItems < 6:
             for item in range(nrOfItems, 6 ):
                 self.displayedMenuItems.append("")
-                self.labelHandler.append(self.createLabel(240, y, "white", 
+                self.labelHandler.append(self.createLabel(self.xpos, y, "white", 
                              "", partial(self.itemCallback, item)))
                 index += 1
                 y += 37
@@ -109,7 +111,7 @@ class selectMenu(QDialog):
         self.pushButton.setFont(self.font)
         self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton.setStyleSheet("background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);selection-color: rgb(0, 0, 0);")
-        self.pushButton.setGeometry(QtCore.QRect(240, 10, 150, 30))
+        self.pushButton.setGeometry(QtCore.QRect(self.xpos, 10, 150, 30))
         self.pushButton.setObjectName("pushButton")  
         self.pushButton.pressed.connect(self.upPressed)   
         self.pushButton.setText("▲")  
@@ -126,7 +128,7 @@ class selectMenu(QDialog):
         self.pushButton.setFont(self.font)
         self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton.setStyleSheet("background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);selection-color: rgb(0, 0, 0);")
-        self.pushButton.setGeometry(QtCore.QRect(240, 280, 150, 30))
+        self.pushButton.setGeometry(QtCore.QRect(self.xpos, 280, 150, 30))
         self.pushButton.setObjectName("pushButton")   
         self.pushButton.pressed.connect(self.downPressed)   
         self.pushButton.setText("▼")  

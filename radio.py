@@ -24,7 +24,7 @@ class radio():
         self.dia = dia
         self.sDialog = station.SelectStation()
         
-        dia.setStyleSheet("QWidget#Dialog {background-image: url(Music-Record-Vinyl.jpg);}")
+        dia.setStyleSheet("QWidget#Dialog {background-image: url(Music-Record-Vinyl-800-480.jpg);}")
        
         
         self.infoTimer = QtCore.QTimer()
@@ -33,14 +33,14 @@ class radio():
         
         font = QtGui.QFont()
         font.setFamily("Droid Sans")
-        font.setPointSize(17)
+        font.setPointSize(28)
         font.setBold(True)
         font.setWeight(75)
         
         self.label2 = labelClickable.QLabelClickable(self.dia)
         self.label2.setFont(font)
         #self.label2.setGeometry(15, 15, 200, 30)
-        self.label2.setGeometry(240, 270, 231, 31)
+        self.label2.setGeometry(350, 400, 400, 60)
         self.label2.setText("<font color='lightGray'> Back </font>")
         self.label2.clicked.connect(self.selectStation_clicked)
         
@@ -190,7 +190,7 @@ class radio():
 
     def showPicture(self, url):
         pixmap = QtGui.QPixmap(url)
-        self.gui.labelPic.resize(200, 200)
+        self.gui.labelPic.resize(300, 300)
         self.gui.labelPic.setPixmap(pixmap.scaled(self.gui.labelPic.size(), QtCore.Qt.IgnoreAspectRatio))
             
 

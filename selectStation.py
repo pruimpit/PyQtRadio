@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_SelectDialog(object):
     def setupUi(self, SelectDialog):
         SelectDialog.setObjectName("SelectDialog")
-        SelectDialog.resize(480, 320)
+        SelectDialog.resize(800, 480)
 
         self.retranslateUi(SelectDialog)
         QtCore.QMetaObject.connectSlotsByName(SelectDialog)

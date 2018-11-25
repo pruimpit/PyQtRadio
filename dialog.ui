@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>320</height>
+    <width>800</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,14 +27,14 @@
     <rect>
      <x>30</x>
      <y>20</y>
-     <width>421</width>
-     <height>31</height>
+     <width>751</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Droid Sans</family>
-     <pointsize>20</pointsize>
+     <pointsize>32</pointsize>
      <weight>75</weight>
      <bold>true</bold>
      <kerning>true</kerning>
@@ -53,16 +53,16 @@
   <widget class="QLabel" name="labelTime">
    <property name="geometry">
     <rect>
-     <x>240</x>
-     <y>120</y>
-     <width>211</width>
-     <height>121</height>
+     <x>350</x>
+     <y>150</y>
+     <width>441</width>
+     <height>181</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Droid Sans</family>
-     <pointsize>55</pointsize>
+     <pointsize>120</pointsize>
      <weight>75</weight>
      <bold>true</bold>
      <kerning>true</kerning>
@@ -76,15 +76,15 @@
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>60</y>
-     <width>421</width>
-     <height>31</height>
+     <y>90</y>
+     <width>751</width>
+     <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Droid Sans</family>
-     <pointsize>20</pointsize>
+     <pointsize>32</pointsize>
      <weight>75</weight>
      <bold>true</bold>
      <kerning>true</kerning>
@@ -97,8 +97,8 @@
   <widget class="QLabel" name="labelPic">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>100</y>
+     <x>30</x>
+     <y>160</y>
      <width>59</width>
      <height>14</height>
     </rect>

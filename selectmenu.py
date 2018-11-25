@@ -21,7 +21,7 @@ class selectMenu(QDialog):
         
         self.font = QtGui.QFont()
         self.font.setFamily("Droid Sans")
-        self.font.setPointSize(17)
+        self.font.setPointSize(30)
         self.font.setBold(True)
         self.font.setWeight(75)
         
@@ -36,7 +36,7 @@ class selectMenu(QDialog):
     def createLabel(self, x, y, color, text, connect):
         label_hdl = labelClickable.QLabelClickable(self.dialogParent)
         label_hdl.setFont(self.font)
-        label_hdl.setGeometry(x, y, 230, 30)
+        label_hdl.setGeometry(x, y, 500, 50)
         label_hdl.setText("<font color="+color+">"+text+"</font>")
         if connect != None:
             label_hdl.clicked.connect(connect)
@@ -60,7 +60,7 @@ class selectMenu(QDialog):
         if nrOfItems > 6:
             self.downButton() 
             nrOfItems = 6
-        y = 53
+        y = 70
         index = 0
         for item in range(0, nrOfItems):
             self.displayedMenuItems.append(items[item].get("url"))
@@ -68,7 +68,7 @@ class selectMenu(QDialog):
                              items[item].get("name"), 
                              partial(self.itemCallback ,item)))
             index += 1
-            y += 37
+            y += 55
         # fill out to 6 if needed    
         if  nrOfItems < 6:
             for item in range(nrOfItems, 6 ):
@@ -76,12 +76,12 @@ class selectMenu(QDialog):
                 self.labelHandler.append(self.createLabel(self.xpos, y, "white", 
                              "", partial(self.itemCallback, item)))
                 index += 1
-                y += 37
+                y += 55
             
             
     
     def updateItemsMenu(self, items, offset): 
-        y = 53
+        y = 70
         nrOfItems = len(items)
         if nrOfItems < 6:
             endItem = nrOfItems
@@ -94,7 +94,7 @@ class selectMenu(QDialog):
                 self.displayedMenuItems[index] = items[item].get("url")
                 self.changeLabel(self.labelHandler[index], "white", 
                                  items[item].get("name"))
-                y += 37
+                y += 55
                 index += 1
         # fill out to 6 if needed    
         if  nrOfItems < 6:
@@ -102,7 +102,7 @@ class selectMenu(QDialog):
                 self.displayedMenuItems[index] = ""
                 self.changeLabel(self.labelHandler[index], "white", "")
                 
-                y += 37
+                y += 55
                 index+=1    
     
         
@@ -111,7 +111,7 @@ class selectMenu(QDialog):
         self.pushButton.setFont(self.font)
         self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton.setStyleSheet("background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);selection-color: rgb(0, 0, 0);")
-        self.pushButton.setGeometry(QtCore.QRect(self.xpos, 10, 150, 30))
+        self.pushButton.setGeometry(QtCore.QRect(self.xpos, 10, 200, 50))
         self.pushButton.setObjectName("pushButton")  
         self.pushButton.pressed.connect(self.upPressed)   
         self.pushButton.setText("▲")  
@@ -128,7 +128,7 @@ class selectMenu(QDialog):
         self.pushButton.setFont(self.font)
         self.pushButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.pushButton.setStyleSheet("background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);selection-color: rgb(0, 0, 0);")
-        self.pushButton.setGeometry(QtCore.QRect(self.xpos, 280, 150, 30))
+        self.pushButton.setGeometry(QtCore.QRect(self.xpos, 420, 200, 50))
         self.pushButton.setObjectName("pushButton")   
         self.pushButton.pressed.connect(self.downPressed)   
         self.pushButton.setText("▼")  

@@ -47,14 +47,14 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Artist</string>
+    <string>-</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelTime">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>150</y>
+     <x>310</x>
+     <y>160</y>
      <width>441</width>
      <height>181</height>
     </rect>
@@ -91,20 +91,48 @@
     </font>
    </property>
    <property name="text">
-    <string>Song</string>
+    <string>-</string>
    </property>
   </widget>
   <widget class="QLabel" name="labelPic">
    <property name="geometry">
     <rect>
      <x>30</x>
-     <y>160</y>
+     <y>210</y>
      <width>59</width>
      <height>14</height>
     </rect>
    </property>
    <property name="text">
     <string>Pic</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelDate">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>330</y>
+     <width>441</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Droid Sans</family>
+     <pointsize>32</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>-</string>
    </property>
   </widget>
  </widget>

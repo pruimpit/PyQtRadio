@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QMessageBox
 import mpd
 import station
 import labelClickable
+import urllib
 
 
 import time
@@ -40,18 +41,19 @@ class radio():
         self.label2 = labelClickable.QLabelClickable(self.dia)
         self.label2.setFont(font)
         #self.label2.setGeometry(15, 15, 200, 30)
-        self.label2.setGeometry(350, 400, 400, 60)
+        self.label2.setGeometry(28, 415, 750, 60)
         self.label2.setText("<font color='lightGray'> Back </font>")
         self.label2.clicked.connect(self.selectStation_clicked)
         
         
         
         
-        self.showArtist("The Artist")
-        self.showSong("The song")
+        self.showArtist("")
+        self.showSong("")
         self.showStation("Pinguin radio")
         self.showTime()
-        self.showPicture("pinguin.jpg")
+        #self.showPicture("pinguin.jpg")
+        self.showPicture("https://pbs.twimg.com/profile_images/1011919547555868672/r-BPzuFQ_400x400.jpg")
         
         self.client = mpd.MPDClient()       # create client object
         self.client.timeout = 2             # network timeout in seconds (floats allowed), default: None
@@ -185,12 +187,19 @@ class radio():
     def showTime(self):
         self.timeString = time.strftime('%H:%M', time.localtime())
         self.gui.labelTime.setText("<font color='white'>" +self.timeString+ "</font>")
+        self.dateString = time.strftime("%A %d %B", time.localtime())
+        self.gui.labelDate.setText("<font color='white'>" +self.dateString+ "</font>")
         
 
 
     def showPicture(self, url):
-        pixmap = QtGui.QPixmap(url)
-        self.gui.labelPic.resize(300, 300)
+        #pixmap = QtGui.QPixmap(url)
+        
+        data = urllib.request.urlopen(url).read()
+        pixmap = QtGui.QPixmap()
+        pixmap.loadFromData(data)
+        #icon = QIcon(pixmap)
+        self.gui.labelPic.resize(200, 200)
         self.gui.labelPic.setPixmap(pixmap.scaled(self.gui.labelPic.size(), QtCore.Qt.IgnoreAspectRatio))
             
 

@@ -72,6 +72,15 @@ class SelectStation(QDialog):
             print("going to play:")        
             self.radio.playNew(url, self.items[item].get("name"))
             print("playing:") 
+            image = self.items[item].get("image")
+            print(image)
+            if image != None:
+                self.radio.showPicture(image)
+            self.radio.showArtist("")
+            self.radio.showSong("")
+            
+                
+                
             self.hide()
         else:
             self.items = self.tuneIn.getNextLayer(self.items[item].get("url"))

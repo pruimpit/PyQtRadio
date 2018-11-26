@@ -112,14 +112,14 @@
     <rect>
      <x>320</x>
      <y>330</y>
-     <width>441</width>
+     <width>481</width>
      <height>51</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Droid Sans</family>
-     <pointsize>32</pointsize>
+     <pointsize>30</pointsize>
      <weight>75</weight>
      <bold>true</bold>
      <kerning>true</kerning>

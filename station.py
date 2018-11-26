@@ -1,23 +1,18 @@
 from PyQt5 import QtGui
 from PyQt5.QtWidgets import QDialog
-from PyQt5 import QtCore, QtGui, QtWidgets
-
-from functools import partial
 
 import labelClickable
 import selectStation
 import selectmenu
 import json
-import openradio
+import tunein
 import urllib
-from urllib.request import Request
-from urllib.request import urlopen
 import soma
 import plparser
 
 selectXpos = 250
-
-
+normalcolor = "#b1b1b1"
+highlight = "White" 
 
 class SelectStation(QDialog):
     def __init__(self):
@@ -25,13 +20,13 @@ class SelectStation(QDialog):
         self.selectStation = selectStation.Ui_SelectDialog()
         self.selectStation.setupUi(self)
         self.setStyleSheet("QWidget#SelectDialog {background-image: url(Music-Record-Vinyl-800-480.jpg);}")
-        self.createLabel(15, 15, "lightGray", "Back", self.backButton_clicked)
-        self.fav_label = self.createLabel(15, 65, "yellow","Favorites", self.favorites_clicked)
-        self.tuneIn_label = self.createLabel(15, 115, "lightGray","TuneIn", self.tuneIn_clicked)
-        self.somafm_label = self.createLabel(15, 165, "lightGray","SomaFm", self.somafm_clicked)
+        self.createLabel(15, 15, normalcolor, "Back", self.backButton_clicked)
+        self.fav_label = self.createLabel(15, 65, highlight, "Favorites", self.favorites_clicked)
+        self.tuneIn_label = self.createLabel(15, 115, normalcolor,"TuneIn", self.tuneIn_clicked)
+        self.somafm_label = self.createLabel(15, 165, normalcolor,"SomaFm", self.somafm_clicked)
         self.readFavorites()
         self.items = self.favorites
-        self.tuneIn = openradio.openRadio()
+        self.tuneIn = tunein.openRadio()
         self.sMenu = selectmenu.selectMenu(self, self.items, 6, selectXpos, self.itemSelected)
         self.menu = "Favorites"      
         
@@ -46,9 +41,11 @@ class SelectStation(QDialog):
             print("file problem:" + str(msg))
         return           
 
+
     def show(self):
         self.favorites_clicked()
         super().show()
+
         
     def itemSelected(self, item):
         if self.items[item].get("type") == "audio":
@@ -78,15 +75,12 @@ class SelectStation(QDialog):
                 self.radio.showPicture(image)
             self.radio.showArtist("")
             self.radio.showSong("")
-            
-                
-                
+            self.radio.show()    
             self.hide()
         else:
             self.items = self.tuneIn.getNextLayer(self.items[item].get("url"))
             self.sMenu.setItems(self.items)
               
-    
         
     def createLabel(self, x, y, color, text, connect):
         font = QtGui.QFont()
@@ -116,33 +110,37 @@ class SelectStation(QDialog):
  
         
     def hideSelectStation(self):
+        self.radio.show()
         self.hide()
         
 
     def backButton_clicked(self):
+        self.radio.show()
         self.hide()    
 
 
     def favorites_clicked(self):
-        self.changeLabel(self.fav_label, "Yellow", "Favorites")
-        self.changeLabel(self.tuneIn_label, "lightGray", "TuneIn") 
-        self.changeLabel(self.somafm_label,"lightGray","SomaFm") 
+        self.changeLabel(self.fav_label, highlight, "Favorites")
+        self.changeLabel(self.tuneIn_label, normalcolor, "TuneIn") 
+        self.changeLabel(self.somafm_label, normalcolor, "SomaFm") 
         self.items = self.favorites
         self.menu = "Favorites"
         self.sMenu.setItems(self.items)
+    
      
     def tuneIn_clicked(self):
-        self.changeLabel(self.fav_label, "lightGray", "Favorites") 
-        self.changeLabel(self.tuneIn_label, "Yellow", "TuneIn")  
-        self.changeLabel(self.somafm_label,"lightGray","SomaFm") 
+        self.changeLabel(self.fav_label, normalcolor, "Favorites") 
+        self.changeLabel(self.tuneIn_label, highlight, "TuneIn")  
+        self.changeLabel(self.somafm_label, normalcolor, "SomaFm") 
         self.items = self.tuneIn.getOverview()
         self.menu = "tuneIn"
         self.sMenu.setItems(self.items)
+    
             
     def somafm_clicked(self):
-        self.changeLabel(self.fav_label, "lightGray", "Favorites")  
-        self.changeLabel(self.tuneIn_label, "lightGray", "TuneIn") 
-        self.changeLabel(self.somafm_label,"Yellow","SomaFm")
+        self.changeLabel(self.fav_label, normalcolor, "Favorites")  
+        self.changeLabel(self.tuneIn_label, normalcolor, "TuneIn") 
+        self.changeLabel(self.somafm_label, highlight, "SomaFm")
         self.items = soma.get_stations()
         self.menu = "Somafm"
         self.sMenu.setItems(self.items)

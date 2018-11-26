@@ -196,8 +196,3 @@ def parse(filename=None, filedata=None, trackObject=Track, playlistObject=Playli
         import xmlparser
         return xmlparser.parse(file, trackObject, playlistObject)
 
-#if __name__ == '__main__':
-#    from sys import argv
-#    f = open(argv[1], 'r')
-#    print parse(filedata=f.read())
-#    f.close()

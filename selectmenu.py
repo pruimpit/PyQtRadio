@@ -19,6 +19,9 @@ class selectMenu(QDialog):
         self.length = 0
         self.xpos = xpos
         
+        self.normalcolor = "White"
+        self.highlight = "Yellow" 
+        
         self.font = QtGui.QFont()
         self.font.setFamily("Droid Sans")
         self.font.setPointSize(30)
@@ -47,7 +50,7 @@ class selectMenu(QDialog):
           
         
     def itemCallback(self, item):
-        if item < (len(self.items)-1):
+        if item < (len(self.items)):
             self.callback(item + self.offset)
         
     
@@ -61,21 +64,18 @@ class selectMenu(QDialog):
             self.downButton() 
             nrOfItems = 6
         y = 70
-        index = 0
         for item in range(0, nrOfItems):
             self.displayedMenuItems.append(items[item].get("url"))
-            self.labelHandler.append(self.createLabel(self.xpos, y, "white", 
+            self.labelHandler.append(self.createLabel(self.xpos, y, self.normalcolor, 
                              items[item].get("name"), 
-                             partial(self.itemCallback ,item)))
-            index += 1
+                             partial(self.itemCallback, item)))
             y += 55
         # fill out to 6 if needed    
         if  nrOfItems < 6:
             for item in range(nrOfItems, 6 ):
                 self.displayedMenuItems.append("")
-                self.labelHandler.append(self.createLabel(self.xpos, y, "white", 
+                self.labelHandler.append(self.createLabel(self.xpos, y, self.normalcolor, 
                              "", partial(self.itemCallback, item)))
-                index += 1
                 y += 55
             
             
@@ -92,7 +92,7 @@ class selectMenu(QDialog):
         for item in range(offset, endItem):
             if item >=0:
                 self.displayedMenuItems[index] = items[item].get("url")
-                self.changeLabel(self.labelHandler[index], "white", 
+                self.changeLabel(self.labelHandler[index], self.normalcolor, 
                                  items[item].get("name"))
                 y += 55
                 index += 1
@@ -100,7 +100,7 @@ class selectMenu(QDialog):
         if  nrOfItems < 6:
             for item in range(nrOfItems, 6 ):
                 self.displayedMenuItems[index] = ""
-                self.changeLabel(self.labelHandler[index], "white", "")
+                self.changeLabel(self.labelHandler[index], self.normalcolor, "")
                 
                 y += 55
                 index+=1    

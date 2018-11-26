@@ -24,9 +24,7 @@ class radio():
         self.gui = gui
         self.dia = dia
         self.sDialog = station.SelectStation()
-        
         dia.setStyleSheet("QWidget#Dialog {background-image: url(Music-Record-Vinyl-800-480.jpg);}")
-       
         
         self.infoTimer = QtCore.QTimer()
         self.infoTimer.timeout.connect(self.timercall)
@@ -38,21 +36,15 @@ class radio():
         font.setBold(True)
         font.setWeight(75)
         
-        self.label2 = labelClickable.QLabelClickable(self.dia)
-        self.label2.setFont(font)
-        #self.label2.setGeometry(15, 15, 200, 30)
-        self.label2.setGeometry(28, 415, 750, 60)
-        self.label2.setText("<font color='lightGray'> Back </font>")
-        self.label2.clicked.connect(self.selectStation_clicked)
-        
-        
-        
-        
+        self.labelStation = labelClickable.QLabelClickable(self.dia)
+        self.labelStation.setFont(font)
+        self.labelStation.setGeometry(28, 415, 750, 60)
+        self.labelStation.setText("<font color='lightGray'> Back </font>")
+        self.labelStation.clicked.connect(self.selectStation_clicked)
         self.showArtist("")
         self.showSong("")
         self.showStation("Pinguin radio")
         self.showTime()
-        #self.showPicture("pinguin.jpg")
         self.showPicture("https://pbs.twimg.com/profile_images/1011919547555868672/r-BPzuFQ_400x400.jpg")
         
         self.client = mpd.MPDClient()       # create client object
@@ -65,18 +57,24 @@ class radio():
         print("Starting")
         self.play(self.number)
         self.getShowInfo()
+       
+       
+    def show(self):
+        self.dia.show()  
         
+    def hide(self):
+        self.dia.hide()   
     
        
     def timercall(self):
         self.getShowInfo()
         self.showTime()
+  
      
     def selectStation_clicked(self):
         self.sDialog.showSelectStation(self)
-        
-     
-        
+        self.hide()
+  
     
     def connect(self):
         try:
@@ -110,9 +108,6 @@ class radio():
         except: 
             print("could not play")
         self.disconnect()    
-    
-    
-    
     
     
     def play(self, number):
@@ -165,19 +160,15 @@ class radio():
             self.showArtist(song[0])
             self.showSong(song[1])
            
-       
         
     #################################################################################################
     
     def showStation(self, station):
-        
-        self.label2.setText("<font color='lightGray'>" + station + "</font>")
-        
+        self.labelStation.setText("<font color='lightGray'>" + station + "</font>")
  
     
     def showSong(self, song):
         self.gui.labelSong.setText("<font color='white'>" + song + "</font>")
-        
         
         
     def showArtist(self, artist):
@@ -193,14 +184,13 @@ class radio():
 
 
     def showPicture(self, url):
-        #pixmap = QtGui.QPixmap(url)
-        
-        data = urllib.request.urlopen(url).read()
-        pixmap = QtGui.QPixmap()
-        pixmap.loadFromData(data)
-        #icon = QIcon(pixmap)
-        self.gui.labelPic.resize(200, 200)
-        self.gui.labelPic.setPixmap(pixmap.scaled(self.gui.labelPic.size(), QtCore.Qt.IgnoreAspectRatio))
-            
+        try: 
+            data = urllib.request.urlopen(url).read()
+            pixmap = QtGui.QPixmap()
+            pixmap.loadFromData(data)
+            self.gui.labelPic.resize(200, 200)
+            self.gui.labelPic.setPixmap(pixmap.scaled(self.gui.labelPic.size(), QtCore.Qt.IgnoreAspectRatio))
+        except:
+            pass        
 
         

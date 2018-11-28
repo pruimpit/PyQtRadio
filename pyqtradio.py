@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import sys
 from PyQt5.QtWidgets import QDialog, QApplication
-import dialog
+import radioDialog
 import radio
 import atexit
 
@@ -9,7 +9,7 @@ import atexit
 class AppWindow(QDialog):
     def __init__(self):
         super().__init__()
-        self.ui = dialog.Ui_Dialog()
+        self.ui = radioDialog.Ui_Dialog()
         self.ui.setupUi(self)
         self.radio = radio.radio(self.ui, self)
         self.show()

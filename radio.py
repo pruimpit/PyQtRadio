@@ -4,8 +4,10 @@ from PyQt5.QtWidgets import QDialog
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal, QTimer
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QMessageBox
+import clockDialog
 
 
+import clock
 import mpd
 import station
 import labelClickable
@@ -25,6 +27,7 @@ class radio():
         self.dia = dia
         self.sDialog = station.SelectStation()
         dia.setStyleSheet("QWidget#Dialog {background-image: url(Music-Record-Vinyl-800-480.jpg);}")
+        self.cDialog = clock.Clock(self)
         
         self.infoTimer = QtCore.QTimer()
         self.infoTimer.timeout.connect(self.timercall)
@@ -56,7 +59,17 @@ class radio():
         self.addStation("https://streams.pinguinradio.com/PinguinRadio320.mp3")
         print("Starting")
         self.play(self.number)
+        self.status = "playing"
         self.getShowInfo()
+       
+       
+    def showClock(self):
+        self.cDialog.show()   
+    
+    
+    def hideClock(self):
+        self.cDialog.hide()   
+       
        
        
     def show(self):
@@ -116,6 +129,7 @@ class radio():
             self.client.play(number)
         except: 
             print("could not play")
+        self.status = "playing"
         self.disconnect()    
     
     
@@ -129,6 +143,7 @@ class radio():
             self.client.play(0)
         except: 
             print("could not play")
+        self.status = "playing"
         self.disconnect()    
             
                      
@@ -150,16 +165,17 @@ class radio():
             self.client.stop()
         except:
             pass
-        
+        self.status = "stopped"
        
     def getShowInfo(self):
-        info = self.getInfo()
-        song = info.get("title")
-        if song != None:
-            song = song.split('-')
-            self.showArtist(song[0])
-            self.showSong(song[1])
-           
+        if self.status == "playing":
+            info = self.getInfo()
+            song = info.get("title")
+            if song != None:
+                song = song.split('-')
+                self.showArtist(song[0])
+                self.showSong(song[1])
+               
         
     #################################################################################################
     
@@ -178,8 +194,14 @@ class radio():
     def showTime(self):
         self.timeString = time.strftime('%H:%M', time.localtime())
         self.gui.labelTime.setText("<font color='white'>" +self.timeString+ "</font>")
+        self.cDialog.clock.labelTime.setText("<font color='white'>" +self.timeString+ "</font>")
         self.dateString = time.strftime("%A %d %B", time.localtime())
         self.gui.labelDate.setText("<font color='white'>" +self.dateString+ "</font>")
+        self.cDialog.clock.labelDate.setText("<font color='white'>" +self.dateString+ "</font>")
+        
+        
+        
+        
         
 
 

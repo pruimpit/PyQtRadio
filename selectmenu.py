@@ -9,7 +9,7 @@ import labelClickable
 class selectMenu(QDialog):
     def __init__(self, dialog, items, nrDisplayItems, xpos, callBack):
         super().__init__()
-        self.dialogParent  = dialog
+        self.dialogParent = dialog
         self.callback = callBack
         self.displayedMenuItems = []
         self.labelHandler = []

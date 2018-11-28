@@ -6,6 +6,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 import clockDialog
 import labelClickable
 import random
+import platform 
+
 
 
 class Clock(QDialog):
@@ -20,6 +22,9 @@ class Clock(QDialog):
 
     
     def show(self):
+        if "arm" in platform.machine(): 
+            import rpi_backlight as bl
+            bl.set_brightness(11)
         ypos = random.randint(0, 220)
         self.clock.labelTime.setGeometry(QtCore.QRect(190, ypos, 441, 181))
         self.clock.labelDate.setGeometry(QtCore.QRect(190, ypos+180, 481, 51))
@@ -28,6 +33,9 @@ class Clock(QDialog):
         super().show()
 
     def hide(self):
+        if "arm" in platform.machine(): 
+            import rpi_backlight as bl
+            bl.set_brightness(255)
         self.radio.play(0)
         super().hide()
 

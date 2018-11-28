@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'dialog.ui'
+# Form implementation generated from reading ui file 'radioDialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.10.1
 #
@@ -31,7 +31,7 @@ class Ui_Dialog(object):
         self.labelArtist.setAutoFillBackground(False)
         self.labelArtist.setObjectName("labelArtist")
         self.labelTime = QtWidgets.QLabel(Dialog)
-        self.labelTime.setGeometry(QtCore.QRect(310, 160, 441, 181))
+        self.labelTime.setGeometry(QtCore.QRect(300, 160, 441, 181))
         font = QtGui.QFont()
         font.setFamily("Droid Sans")
         font.setPointSize(120)
@@ -54,7 +54,7 @@ class Ui_Dialog(object):
         self.labelPic.setGeometry(QtCore.QRect(30, 210, 59, 14))
         self.labelPic.setObjectName("labelPic")
         self.labelDate = QtWidgets.QLabel(Dialog)
-        self.labelDate.setGeometry(QtCore.QRect(320, 330, 481, 51))
+        self.labelDate.setGeometry(QtCore.QRect(310, 330, 481, 51))
         font = QtGui.QFont()
         font.setFamily("Droid Sans")
         font.setPointSize(30)

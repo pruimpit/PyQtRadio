@@ -5,6 +5,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt, pyqtSignal, QTimer
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel, QMessageBox
 import clockDialog
+import platform
+import queue
 
 
 import clock
@@ -12,8 +14,6 @@ import mpd
 import station
 import labelClickable
 import urllib
-
-
 import time
 
 HOST = "localhost"
@@ -25,6 +25,29 @@ class radio():
     def __init__(self, gui, dia):
         self.gui = gui
         self.dia = dia
+        
+        if "arm" in platform.machine():
+            print("ARM Detected, so probably Rapberry")
+            import rpi_backlight as bl
+            import lircradio
+           
+            # Backlight
+            bl.set_brightness(255) # start up with full brightness
+            
+            # LIRC remote
+            lircQueue = queue.Queue()
+            
+            self.LircObject = lircradio.LircInterface(lircQueue)
+            self.LircObject.start()
+            
+            self.LircHandler = lircradio.LircHandler(lircQueue)
+            self.lircTimer = QtCore.QTimer()
+            self.lircTimer.timeout.connect(self.LircHandler.timerCall)
+            self.lircTimer.start(1000)
+            self.LircHandler.addCallback("ok", self.selectStation_clicked)
+        else:
+            print("No ARM, so no Rapberry")
+            
         self.sDialog = station.SelectStation()
         dia.setStyleSheet("QWidget#Dialog {background-image: url(Music-Record-Vinyl-800-480.jpg);}")
         self.cDialog = clock.Clock(self)
@@ -108,7 +131,6 @@ class radio():
         self.connect()
         try:
             self.client.add(station)
-            print(self.client.playlist())
         except mpd.CommandError:
             print("Station not added")
         self.disconnect()    
@@ -153,7 +175,6 @@ class radio():
             info = self.client.currentsong()
         except:
             return ""
-        print(info)
         self.disconnect()
         return info
 
@@ -199,10 +220,6 @@ class radio():
         self.gui.labelDate.setText("<font color='white'>" +self.dateString+ "</font>")
         self.cDialog.clock.labelDate.setText("<font color='white'>" +self.dateString+ "</font>")
         
-        
-        
-        
-        
 
 
     def showPicture(self, url):
@@ -215,4 +232,5 @@ class radio():
         except:
             pass        
 
-        
+    
+   

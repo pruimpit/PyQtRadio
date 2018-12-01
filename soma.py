@@ -50,8 +50,8 @@ def get_stations():
     return items    
  
  
-stations =  get_stations()
-print(stations)       
+#stations =  get_stations()
+#print(stations)       
 #playlist = stations[0].get("url")
 
 #req = urllib.request.urlopen(playlist)

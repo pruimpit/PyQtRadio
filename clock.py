@@ -24,7 +24,7 @@ class Clock(QDialog):
     def show(self):
         if "arm" in platform.machine(): 
             import rpi_backlight as bl
-            bl.set_brightness(11)
+            bl.set_brightness(20)
         ypos = random.randint(0, 220)
         self.clock.labelTime.setGeometry(QtCore.QRect(190, ypos, 441, 181))
         self.clock.labelDate.setGeometry(QtCore.QRect(190, ypos+180, 481, 51))

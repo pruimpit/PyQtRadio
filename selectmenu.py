@@ -3,6 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 from functools import partial
 
+import platform
 import labelClickable
 
 
@@ -27,9 +28,9 @@ class selectMenu(QDialog):
         self.font.setPointSize(30)
         self.font.setBold(True)
         self.font.setWeight(75)
-        
         self.createItemsMenu(self.items)
-  
+         
+       
     def setItems(self, items):
         self.offset = 0
         self.items = items
@@ -138,4 +139,5 @@ class selectMenu(QDialog):
         if self.offset < (len(self.items)-6):
             self.offset+=1
         self.updateItemsMenu(self.items, self.offset)
+    
     

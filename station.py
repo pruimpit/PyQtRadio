@@ -53,19 +53,19 @@ class SelectStation(QDialog):
         #self.fav_button.resize(50, 50)
         self.favplus_button.setPixmap(pixmap.scaled(self.favplus_button.size(), QtCore.Qt.IgnoreAspectRatio))
         
-    
+        
+        #if "arm" in platform.machine():
+        #    super().self.lircHandler.addCallback("power", self.lircPower)
+        
          
     def powerButton_clicked(self):
         self.radio.showClock()
-           
-        
         
         
     def readFavorites(self):
         try:
             with open("favorites.json") as json_data:
                 self.favorites = json.load(json_data)
-                print(self.favorites)
         except Exception as msg:
             print("file problem:" + str(msg))
         return           
@@ -74,7 +74,6 @@ class SelectStation(QDialog):
         try:
             with open("pinguin.json") as json_data:
                 self.pinguin = json.load(json_data)
-                print(self.pinguin)
         except Exception as msg:
             print("file problem:" + str(msg))
         return     
@@ -97,29 +96,21 @@ class SelectStation(QDialog):
     def itemSelected(self, item):
         if self.items[item].get("type") == "audio":
             print("Item selected: " + str(item))
-            print("Name: " + self.items[item].get("name") + " url: " + self.items[item].get("url") )
             if self.menu == "tuneIn":
-                print("new url:" + self.items[item].get("url"))
                 url = self.tuneIn.getStreamUrl(self.items[item].get("url")).splitlines()[0]
-                print("URRLL")
-                print(url)
             else:
                 url = self.items[item].get("url")
             if (".pls" in url) or (".m3u" in url):
                 try:
-                    print("playlist detected")
                     req = urllib.request.urlopen(url)
                     file = req.read()
                     url = plparser.parse(filename=url, filedata=file).Tracks[0].File
                 except Exception as msg:
                     print(msg)    
-            print("going to play:") 
             self.playing_name = self.items[item].get("name")  
             self.playing_url = url
             self.radio.playNew(url,self.playing_name)
-            print("playing:") 
             self.playing_image = self.items[item].get("image")
-            print(self.playing_image)
             if self.playing_image != None:
                 self.radio.showPicture(self.playing_image)
             self.radio.showArtist("")
@@ -143,7 +134,6 @@ class SelectStation(QDialog):
         label_hdl.setText("<font color="+color+">"+text+"</font>")
         if connect != None:
             label_hdl.clicked.connect(connect)
-            print("Connect: " + str(connect))
         return label_hdl    
  
     def createIconLabel(self, x, y, color, text, connect):
@@ -158,7 +148,6 @@ class SelectStation(QDialog):
         label_hdl.setText("<font color="+color+">"+text+"</font>")
         if connect != None:
             label_hdl.clicked.connect(connect)
-            print("Connect: " + str(connect))
         return label_hdl    
  
  

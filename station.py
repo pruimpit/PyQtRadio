@@ -269,9 +269,7 @@ class SelectStation(QDialog):
                 self.tuneIn_clicked()    
             elif self.menu == "tuneIn":     
                 self.somafm_clicked()
-        #elif self.menuActive == "right":
-        #    print("down1")
-        #    self.sMenu.remoteDown()        
+        
         
     def remoteUp(self):
         if self.menuActive == "left":
@@ -281,19 +279,15 @@ class SelectStation(QDialog):
                 self.pinguin_clicked()
             elif self.menu == "Somafm":
                 self.tuneIn_clicked()    
-        #elif self.menuActive == "right":
-        #    self.sMenu.remoteUp()
             
             
     def remoteOK(self):
         if self.menuActive == "left":
             self.menuActive = "right"
-            print("send highlight")
             self.sMenu.highlight(0)
         elif self.menuActive == "right":
             self.itemSelected(self.sMenu.getCurrentItem())
-            print("station OK")
-        
+            
             
          
         

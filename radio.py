@@ -86,6 +86,7 @@ class radio():
         
         self.number = 0
         self.clear()
+        self.lasturl = ""
         self.addStation("https://streams.pinguinradio.com/PinguinRadio320.mp3")
         print("Starting")
         self.play(self.number)
@@ -136,6 +137,7 @@ class radio():
         
     
     def addStation(self, station):
+        self.lasturl = station
         self.connect()
         try:
             self.client.add(station)
@@ -151,6 +153,12 @@ class radio():
         except: 
             print("could not play")
         self.disconnect()    
+    
+    def playAfterSandby(self):
+        self.clear()
+        self.addStation(self.lasturl)
+        time.sleep(0.5)
+        self.play(0)
     
     
     def play(self, number):
@@ -272,18 +280,12 @@ class radio():
     
         
     def power_clicked(self):
-        print("PWER???")
         if self.menuActive == True:
-            print("PWERTrue")
             self.showClock()
-            print("PWERTrue2")
             self.hide()
-            print("radio: show clock")
         else:
-            print("PWERFalse")
             self.cDialog.remoteCommand("power")
             self.sDialog.remoteCommand("power")
-            print("radio: power to others")
             
         
         

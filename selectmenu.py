@@ -179,5 +179,4 @@ class selectMenu(QDialog):
         if command == "up":
             self.remoteUp()
         if command == "down":
-            print("down2")
             self.remoteDown()

@@ -11,6 +11,7 @@ import tunein
 import urllib
 import soma
 import plparser
+import platform
 
 selectXpos = 250
 normalcolor = "#b1b1b1"
@@ -19,6 +20,7 @@ highlight = "White"
 class SelectStation(QDialog):
     def __init__(self):
         super().__init__()
+        self.menuActive = None
         self.selectStation = stationDialog.Ui_SelectDialog()
         self.selectStation.setupUi(self)
         self.setStyleSheet("QWidget#SelectDialog {background-image: url(Music-Record-Vinyl-800-480.jpg);}")
@@ -53,10 +55,6 @@ class SelectStation(QDialog):
         #self.fav_button.resize(50, 50)
         self.favplus_button.setPixmap(pixmap.scaled(self.favplus_button.size(), QtCore.Qt.IgnoreAspectRatio))
         
-        
-        #if "arm" in platform.machine():
-        #    super().self.lircHandler.addCallback("power", self.lircPower)
-        
          
     def powerButton_clicked(self):
         self.radio.showClock()
@@ -90,6 +88,7 @@ class SelectStation(QDialog):
 
     def show(self):
         self.favorites_clicked()
+        self.menuActive = "left"
         super().show()
 
         
@@ -120,6 +119,9 @@ class SelectStation(QDialog):
         else:
             self.items = self.tuneIn.getNextLayer(self.items[item].get("url"))
             self.sMenu.setItems(self.items)
+            if self.menuActive == "right":
+                self.sMenu.highlight(0)
+                
          
         
     def createLabel(self, x, y, color, text, connect):
@@ -164,11 +166,13 @@ class SelectStation(QDialog):
  
         
     def hideSelectStation(self):
-        self.radio.show()
+        self.menuActive = None
+        #self.radio.show()
         self.hide()
         
 
     def backButton_clicked(self):
+        self.menuActive = None
         self.radio.show()
         self.hide()    
 
@@ -235,5 +239,62 @@ class SelectStation(QDialog):
         self.writeFavorites()
         self.radio.show()
         self.hide()   
+        
+    
+    def remoteCommand(self, command):
+        # send command to selectmenu
+        self.sMenu.remoteCommand(command)
+        
+        # handle commands if this menu is active
+        if (self.menuActive != None):
+            if  command == "power":
+                self.radio.showClock()
+            elif command == "down":
+                self.remoteDown()
+            elif command == "up":
+                self.remoteUp()
+            elif (command == "ok") or (command == "right"):
+                self.remoteOK()
+            elif (command == "back") or (command == "left"):
+                self.menuActive = None
+                self.radio.show()
+                self.hide()        
+            
+        
+    def remoteDown(self):
+        if self.menuActive == "left":
+            if self.menu == "Favorites":
+                self.pinguin_clicked()
+            elif self.menu == "Pinguin":
+                self.tuneIn_clicked()    
+            elif self.menu == "tuneIn":     
+                self.somafm_clicked()
+        #elif self.menuActive == "right":
+        #    print("down1")
+        #    self.sMenu.remoteDown()        
+        
+    def remoteUp(self):
+        if self.menuActive == "left":
+            if self.menu == "Pinguin":
+                self.favorites_clicked()    
+            elif self.menu == "tuneIn":     
+                self.pinguin_clicked()
+            elif self.menu == "Somafm":
+                self.tuneIn_clicked()    
+        #elif self.menuActive == "right":
+        #    self.sMenu.remoteUp()
+            
+            
+    def remoteOK(self):
+        if self.menuActive == "left":
+            self.menuActive = "right"
+            print("send highlight")
+            self.sMenu.highlight(0)
+        elif self.menuActive == "right":
+            self.itemSelected(self.sMenu.getCurrentItem())
+            print("station OK")
+        
+            
+         
         
         

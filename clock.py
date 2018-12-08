@@ -13,6 +13,7 @@ import platform
 class Clock(QDialog):
     def __init__(self, radio):
         super().__init__()
+        self.menuActive = False
         self.radio = radio
         self.clock = clockDialog.Ui_Dialog()
         self.clock.setupUi(self)
@@ -22,20 +23,32 @@ class Clock(QDialog):
 
     
     def show(self):
-        if "arm" in platform.machine(): 
+        self.menuActive = True
+        print("1")
+        if "arm" in platform.machine():
             import rpi_backlight as bl
-            bl.set_brightness(20)
+            print("2")
+            bl.set_brightness(15)
         ypos = random.randint(0, 220)
+        print("3")
         self.clock.labelTime.setGeometry(QtCore.QRect(190, ypos, 441, 181))
+        print("4")
         self.clock.labelDate.setGeometry(QtCore.QRect(190, ypos+180, 481, 51))
+        print("5")
         self.radio.sDialog.hideSelectStation()
+        print("6")
         self.radio.stop()
+        print("7")
         super().show()
+        print("8")
+
 
     def hide(self):
+        self.menuActive = False
         if "arm" in platform.machine(): 
             import rpi_backlight as bl
-            bl.set_brightness(255)
+            bl.set_brightness(100)
+        self.radio.show()    
         self.radio.play(0)
         super().hide()
 
@@ -48,3 +61,8 @@ class Clock(QDialog):
         if connect != None:
             label_hdl.clicked.connect(connect)
             return label_hdl            
+
+    def remoteCommand(self, command):
+        if (self.menuActive == True) and (command == "power"):
+            print("clock: power")
+            self.hide()

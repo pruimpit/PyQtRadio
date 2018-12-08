@@ -25,6 +25,7 @@ class radio():
     def __init__(self, gui, dia):
         self.gui = gui
         self.dia = dia
+        self.menuActive = True
         
         if "arm" in platform.machine():
             print("ARM Detected, so probably Rapberry")
@@ -32,7 +33,7 @@ class radio():
             import lircradio
            
             # Backlight
-            bl.set_brightness(255) # start up with full brightness
+            bl.set_brightness(100) # start up with full brightness
             
             # LIRC remote
             lircQueue = queue.Queue()
@@ -44,7 +45,13 @@ class radio():
             self.lircTimer = QtCore.QTimer()
             self.lircTimer.timeout.connect(self.LircHandler.timerCall)
             self.lircTimer.start(1000)
-            self.LircHandler.addCallback("ok", self.selectStation_clicked)
+            self.LircHandler.addCallback("ok", self.ok_clicked)
+            self.LircHandler.addCallback("back", self.back_clicked)
+            self.LircHandler.addCallback("up", self.up_clicked)
+            self.LircHandler.addCallback("down", self.down_clicked)
+            self.LircHandler.addCallback("left", self.left_clicked)
+            self.LircHandler.addCallback("right", self.right_clicked)
+            self.LircHandler.addCallback("power", self.power_clicked)
         else:
             print("No ARM, so no Rapberry")
             
@@ -87,18 +94,19 @@ class radio():
        
        
     def showClock(self):
-        self.cDialog.show()   
-    
+        self.cDialog.show()
+        
     
     def hideClock(self):
-        self.cDialog.hide()   
-       
-       
+        self.cDialog.hide()
+           
        
     def show(self):
+        self.menuActive = True
         self.dia.show()  
         
     def hide(self):
+        self.menuActive = False
         self.dia.hide()   
     
        
@@ -187,6 +195,7 @@ class radio():
         except:
             pass
         self.status = "stopped"
+    
        
     def getShowInfo(self):
         if self.status == "playing":
@@ -221,7 +230,6 @@ class radio():
         self.cDialog.clock.labelDate.setText("<font color='white'>" +self.dateString+ "</font>")
         
 
-
     def showPicture(self, url):
         try: 
             data = urllib.request.urlopen(url).read()
@@ -232,5 +240,51 @@ class radio():
         except:
             pass        
 
+
+    ###############################################################################
+    # Remote control
+
+    def ok_clicked(self):
+        if self.menuActive:
+            self.sDialog.showSelectStation(self)
+            self.hide()
+        else:
+            self.sDialog.remoteCommand("ok")    
     
+    def back_clicked(self):
+        self.sDialog.remoteCommand("back")
+        
+    
+    def up_clicked(self):
+        self.sDialog.remoteCommand("up")
+        
+    
+    def down_clicked(self):
+        self.sDialog.remoteCommand("down")
+    
+    
+    def left_clicked(self):
+        self.sDialog.remoteCommand("left")
+        
+        
+    def right_clicked(self):
+        self.sDialog.remoteCommand("right")    
+    
+        
+    def power_clicked(self):
+        print("PWER???")
+        if self.menuActive == True:
+            print("PWERTrue")
+            self.showClock()
+            print("PWERTrue2")
+            self.hide()
+            print("radio: show clock")
+        else:
+            print("PWERFalse")
+            self.cDialog.remoteCommand("power")
+            self.sDialog.remoteCommand("power")
+            print("radio: power to others")
+            
+        
+        
    

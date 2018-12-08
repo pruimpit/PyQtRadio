@@ -20,8 +20,8 @@ class selectMenu(QDialog):
         self.length = 0
         self.xpos = xpos
         
-        self.normalcolor = "White"
-        self.highlight = "Yellow" 
+        self.normalColor = "White"
+        self.highlightColor = "Yellow" 
         
         self.font = QtGui.QFont()
         self.font.setFamily("Droid Sans")
@@ -29,10 +29,11 @@ class selectMenu(QDialog):
         self.font.setBold(True)
         self.font.setWeight(75)
         self.createItemsMenu(self.items)
-         
+        self.highlightedItem = -1 
        
     def setItems(self, items):
         self.offset = 0
+        self.highlightedItem = -1 
         self.items = items
         self.updateItemsMenu(self.items, self.offset) 
   
@@ -67,7 +68,7 @@ class selectMenu(QDialog):
         y = 70
         for item in range(0, nrOfItems):
             self.displayedMenuItems.append(items[item].get("url"))
-            self.labelHandler.append(self.createLabel(self.xpos, y, self.normalcolor, 
+            self.labelHandler.append(self.createLabel(self.xpos, y, self.normalColor, 
                              items[item].get("name"), 
                              partial(self.itemCallback, item)))
             y += 55
@@ -75,7 +76,7 @@ class selectMenu(QDialog):
         if  nrOfItems < 6:
             for item in range(nrOfItems, 6 ):
                 self.displayedMenuItems.append("")
-                self.labelHandler.append(self.createLabel(self.xpos, y, self.normalcolor, 
+                self.labelHandler.append(self.createLabel(self.xpos, y, self.normalColor, 
                              "", partial(self.itemCallback, item)))
                 y += 55
             
@@ -93,7 +94,11 @@ class selectMenu(QDialog):
         for item in range(offset, endItem):
             if item >=0:
                 self.displayedMenuItems[index] = items[item].get("url")
-                self.changeLabel(self.labelHandler[index], self.normalcolor, 
+                if self.highlightedItem == item:
+                    self.changeLabel(self.labelHandler[index], self.highlightColor, 
+                                 items[item].get("name"))
+                else:
+                    self.changeLabel(self.labelHandler[index], self.normalColor, 
                                  items[item].get("name"))
                 y += 55
                 index += 1
@@ -101,10 +106,18 @@ class selectMenu(QDialog):
         if  nrOfItems < 6:
             for item in range(nrOfItems, 6 ):
                 self.displayedMenuItems[index] = ""
-                self.changeLabel(self.labelHandler[index], self.normalcolor, "")
+                self.changeLabel(self.labelHandler[index], self.normalColor, "")
                 
                 y += 55
                 index+=1    
+    
+    
+    def getCurrentItem(self):
+        return self.highlightedItem            
+    
+    def highlight(self, item):
+        self.highlightedItem = item
+        self.updateItemsMenu(self.items, self.offset)
     
         
     def upButton(self):
@@ -121,6 +134,8 @@ class selectMenu(QDialog):
     def upPressed(self):
         if self.offset > 0:
             self.offset-=1
+            if  self.highlightedItem > -1:
+                self.highlightedItem = self.offset      
         self.updateItemsMenu(self.items, self.offset)
     
 
@@ -138,6 +153,31 @@ class selectMenu(QDialog):
     def downPressed(self):
         if self.offset < (len(self.items)-6):
             self.offset+=1
+            if  self.highlightedItem > -1:
+                self.highlightedItem = self.offset      
         self.updateItemsMenu(self.items, self.offset)
     
+    def remoteUp(self):
+        if (self.highlightedItem > 0) and (self.highlightedItem > -1):
+            self.highlightedItem -= 1
+            if self.highlightedItem < self.offset:
+                self.upPressed()
+            else:
+                self.updateItemsMenu(self.items, self.offset)
+
+        
+    def remoteDown(self):
+        if (self.highlightedItem < len(self.items)-1) and (self.highlightedItem > -1):
+            self.highlightedItem += 1
+            if self.highlightedItem > (self.offset + self.nrDisplayItems):
+                self.downPressed()
+            else:
+                self.updateItemsMenu(self.items, self.offset)
+                
     
+    def remoteCommand(self, command):
+        if command == "up":
+            self.remoteUp()
+        if command == "down":
+            print("down2")
+            self.remoteDown()

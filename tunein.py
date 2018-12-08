@@ -36,7 +36,7 @@ class openRadio(object):
             body = res.get("body")
             if "children" in body[0]:
                 body = body[0].get("children")
-            print("BODY" + str(body))
+            #print("BODY" + str(body))
             for item in body:
                 result.append({"name":item.get("text"),"url":item.get("URL"), "type":item.get("type"), "image":item.get("image")})
         except Exception as msg:

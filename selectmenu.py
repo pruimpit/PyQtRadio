@@ -134,8 +134,6 @@ class selectMenu(QDialog):
     def upPressed(self):
         if self.offset > 0:
             self.offset-=1
-            if  self.highlightedItem > -1:
-                self.highlightedItem = self.offset      
         self.updateItemsMenu(self.items, self.offset)
     
 
@@ -153,8 +151,6 @@ class selectMenu(QDialog):
     def downPressed(self):
         if self.offset < (len(self.items)-6):
             self.offset+=1
-            if  self.highlightedItem > -1:
-                self.highlightedItem = self.offset      
         self.updateItemsMenu(self.items, self.offset)
     
     def remoteUp(self):
@@ -169,7 +165,7 @@ class selectMenu(QDialog):
     def remoteDown(self):
         if (self.highlightedItem < len(self.items)-1) and (self.highlightedItem > -1):
             self.highlightedItem += 1
-            if self.highlightedItem > (self.offset + self.nrDisplayItems):
+            if self.highlightedItem >= (self.offset + self.nrDisplayItems):
                 self.downPressed()
             else:
                 self.updateItemsMenu(self.items, self.offset)

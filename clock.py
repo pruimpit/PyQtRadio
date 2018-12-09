@@ -6,7 +6,8 @@ from PyQt5.QtGui import QIcon, QPixmap
 import clockDialog
 import labelClickable
 import random
-import platform 
+import platform
+import time 
 
 
 
@@ -40,9 +41,11 @@ class Clock(QDialog):
         if "arm" in platform.machine(): 
             import rpi_backlight as bl
             bl.set_brightness(100)
-        self.radio.show()  
-        self.radio.playAfterSandby()  
+        self.radio.playAfterSandby()
+        time.sleep(0.2)  
         super().hide()
+        time.sleep(0.2)  
+        self.radio.show() 
 
     
     

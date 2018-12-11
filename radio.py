@@ -15,6 +15,9 @@ import station
 import labelClickable
 import urllib
 import time
+import configparser
+
+
 
 HOST = "localhost"
 PORT = 6600
@@ -76,9 +79,11 @@ class radio():
         self.labelStation.clicked.connect(self.selectStation_clicked)
         self.showArtist("")
         self.showSong("")
-        self.showStation("Pinguin radio")
+        self.getLastPlayed()
+        
+        self.showStation(self.last_name)
         self.showTime()
-        self.showPicture("https://pbs.twimg.com/profile_images/1011919547555868672/r-BPzuFQ_400x400.jpg")
+        self.showPicture(self.last_image)
         
         self.client = mpd.MPDClient()       # create client object
         self.client.timeout = 2             # network timeout in seconds (floats allowed), default: None
@@ -86,12 +91,30 @@ class radio():
         
         self.number = 0
         self.clear()
-        self.lasturl = ""
-        self.addStation("https://streams.pinguinradio.com/PinguinRadio320.mp3")
+        self.addStation(self.lasturl)
         print("Starting")
         self.play(self.number)
         self.status = "playing"
         self.getShowInfo()
+       
+    def getLastPlayed(self):
+        cfg = configparser.ConfigParser()
+        cfg.read("config.cfg")
+        self.lasturl = cfg.get("station", "last_url", raw=True)
+        self.last_name = cfg.get("station", "last_name", raw=True)
+        self.last_image = cfg.get("station", "last_image", raw=True)
+ 
+        
+    def setLastPlayed(self):  
+        cfg = configparser.ConfigParser()
+        cfg.add_section("station")
+        cfg.set("station", "last_url",  self.lasturl)
+        cfg.set("station", "last_name",  self.last_name)
+        cfg.set("station", "last_image",  self.last_image)
+        with open("config.cfg", "w") as configfile:
+            cfg.write(configfile)
+        
+        
        
        
     def showClock(self):
@@ -172,6 +195,8 @@ class radio():
     
     
     def playNew(self, url, name):
+        self.last_name = name
+        self.lasturl = url
         self.clear()
         self.addStation(url)
         self.showStation(name)
@@ -182,7 +207,8 @@ class radio():
         except: 
             print("could not play")
         self.status = "playing"
-        self.disconnect()    
+        self.disconnect()   
+        self.setLastPlayed() 
             
                      
     def getInfo(self):
@@ -246,7 +272,8 @@ class radio():
             self.gui.labelPic.resize(200, 200)
             self.gui.labelPic.setPixmap(pixmap.scaled(self.gui.labelPic.size(), QtCore.Qt.IgnoreAspectRatio))
         except:
-            pass        
+            pass   
+        self.last_image = url     
 
 
     ###############################################################################

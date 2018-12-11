@@ -108,10 +108,10 @@ class SelectStation(QDialog):
                     print(msg)    
             self.playing_name = self.items[item].get("name")  
             self.playing_url = url
-            self.radio.playNew(url,self.playing_name)
             self.playing_image = self.items[item].get("image")
             if self.playing_image != None:
                 self.radio.showPicture(self.playing_image)
+            self.radio.playNew(url,self.playing_name)
             self.radio.showArtist("")
             self.radio.showSong("")
             self.radio.show()    
